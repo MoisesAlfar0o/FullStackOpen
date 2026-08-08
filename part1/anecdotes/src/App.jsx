@@ -1,5 +1,44 @@
 import { useState } from "react"
 
+const Title = ({ name }) => <h1>{name}</h1>
+
+const Button = ({ onClick, text }) => {
+  return(
+    <button onClick={onClick}>
+      {text}
+    </button>
+  )
+}
+
+const Anecdotes = ({ anecdote, vote }) => {
+  return (
+    <div>
+      <p>{anecdote}</p>
+      <p>has {vote || 0} votes</p>
+    </div>
+  )
+}
+
+const MostVoted = ({ votes, anecdotes }) => {
+  const entries = Object.entries(votes)
+
+  if(entries.length === 0) {
+    return (
+      <p>No votes yet</p>
+    )
+  }
+
+  const [key, value] = entries.reduce((max, current) => {
+    return current[1] > max[1] ? current : max
+  })
+
+  return (
+    <div>
+      <p>{anecdotes[key]}</p>
+      <p>has {value} votes</p>
+    </div>
+  )
+}
 
 const App = () => {
   const anecdotes = [
@@ -16,18 +55,26 @@ const App = () => {
   const [votes, setVotes] = useState({})
   const [selected, setSelected] = useState(1)
 
-  const randomQuote = () => {
-    let randomQuote = Math.floor(Math.random() * (8 - 0 + 1)) + 0
-    console.log(randomQuote)
-    return randomQuote
+  const handleNextAnecdote = () => {
+    let randomQuote = Math.floor(Math.random() * anecdotes.length)
+    setSelected(randomQuote)
   }
-  console.log()
+
+  const handleVotes = () => {
+    setVotes(prevVote => ({
+      ...prevVote,
+      [selected]: (prevVote[selected] || 0) + 1
+    }))
+  }
+
   return (
     <div>
-      <p>{anecdotes[selected]}</p>
-      <p>has 7 votes</p>
-      <button>vote</button>
-      <button onClick={randomQuote}>Next anecdote</button>
+      <Title name='Anecdote of the day'/>
+      <Anecdotes anecdote={anecdotes[selected]} vote={votes[selected]} />
+      <Button onClick={handleVotes} text='vote'/>
+      <Button onClick={handleNextAnecdote} text='Next anecdote'/>
+      <Title name='Anecdote with the most votes'/>      
+      <MostVoted votes={votes} anecdotes={anecdotes}/>
     </div>
   )
 }
