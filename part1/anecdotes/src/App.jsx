@@ -20,21 +20,19 @@ const Anecdotes = ({ anecdote, vote }) => {
 }
 
 const MostVoted = ({ votes, anecdotes }) => {
-  const entries = Object.entries(votes)
-
-  if(entries.length === 0) {
+  if(votes.length === 0) {
     return (
       <p>No votes yet</p>
     )
   }
 
-  const [key, value] = entries.reduce((max, current) => {
-    return current[1] > max[1] ? current : max
-  })
+  const value = Math.max(...votes)
+  const index = votes.indexOf(value)
+  const MostVoted = anecdotes[index]
 
   return (
     <div>
-      <p>{anecdotes[key]}</p>
+      <p>{MostVoted}</p>
       <p>has {value} votes</p>
     </div>
   )
@@ -52,7 +50,7 @@ const App = () => {
     'The only way to go fast, is to go well.'
   ]
 
-  const [votes, setVotes] = useState({})
+  const [votes, setVotes] = useState(Array(anecdotes.length).fill(0))
   const [selected, setSelected] = useState(1)
 
   const handleNextAnecdote = () => {
@@ -61,10 +59,9 @@ const App = () => {
   }
 
   const handleVotes = () => {
-    setVotes(prevVote => ({
-      ...prevVote,
-      [selected]: (prevVote[selected] || 0) + 1
-    }))
+    const newVotes = [...votes]
+    newVotes[selected] += 1
+    setVotes(newVotes)
   }
 
   return (
