@@ -57,7 +57,7 @@ const App = () => {
 
   const handleNextAnecdote = () => {
     let randomAnecdote = Math.floor(Math.random() * anecdotes.length)
-    setSelected(randomQuote)
+    setSelected(randomAnecdote)
   }
 
   const handleVotes = () => {
