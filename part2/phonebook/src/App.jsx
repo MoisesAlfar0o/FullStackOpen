@@ -23,7 +23,6 @@ const App = () => {
    ? persons.filter(person => person.name.toLowerCase().includes(filter.toLowerCase()))
    : persons
 
-
   const alreadyExists = (name) => persons.find(person => person.name === name)
 
   const handleSubmit = (e) => {
