@@ -15,7 +15,6 @@ const App = () => {
     axios
       .get('http://localhost:3001/persons')
       .then(res => {
-        console.log(res.data)
         setPersons(res.data)
       })
   }, [])
@@ -50,6 +49,11 @@ const App = () => {
     setNewNumber('')
   }
 
+  const onDelete = (id) => {
+    const arr = persons.filter(p => p.id !== id)
+    console.log('deleted', arr)
+  } 
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -63,7 +67,7 @@ const App = () => {
         number={newNumber}
       />
       <h3>Numbers</h3>
-      <Persons persons={filteredPersons}/>
+      <Persons persons={filteredPersons} onDelete={onDelete} />
     </div>
   )
 }
