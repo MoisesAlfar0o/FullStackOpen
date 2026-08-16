@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { useEffect } from 'react'
-import axios from 'axios'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
@@ -24,10 +23,6 @@ const App = () => {
   const handleNumber = (e) => setNewNumber(e.target.value)
   const handleFilter = (e) => setFilter(e.target.value)
   
-  const filteredPersons = filter
-   ? persons.filter(person => person.name.toLowerCase().includes(filter.toLowerCase()))
-   : persons
-
   const checkExists = (name) => persons.find(person => person.name === name)
 
   const handleSubmit = (e) => {
@@ -42,8 +37,10 @@ const App = () => {
           .update(result.id, obj)
           .then(returnedPerson => {
             setPersons(persons.map(person => person.id !== result.id ? person : returnedPerson))
+            setNewName('')
+            setNewNumber('')
           })
-           .catch(err => {
+           .catch(() => {
             alert(
               `the person '${result.name}' was already deleted from server`
             )
@@ -56,7 +53,6 @@ const App = () => {
       const obj = {
         name: newName,
         number: newNumber,
-        id: persons.length + 1
       }
 
       personService
@@ -76,14 +72,18 @@ const App = () => {
         .then(() => {
           setPersons(prevPersons => prevPersons.filter(person => person.id !== id))
         })
-        .catch(err => {
+        .catch(() => {
           alert(`${name} was already deleted from server`)
-          setAllPersons(
-            allPersons.filter(person => person.id !== id)
+          setPersons(
+            persons.filter(person => person.id !== id)
           )
         })
     }
   } 
+
+  const filteredPersons = filter
+   ? persons.filter(person => person.name.toLowerCase().includes(filter.toLowerCase()))
+   : persons
 
   return (
     <div>
