@@ -24,16 +24,6 @@
       "name": "Hello",
       "number": "98-76-54321",
       "id": "MUdpl5gC1xM"
-    },
-    {
-      "name": "Moises",
-      "number": "12-34-56-78",
-      "id": "o-yt95mqdLY"
-    },
-    {
-      "name": "Freddy",
-      "number": "12132312",
-      "id": "FtzfQyg35Zc"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

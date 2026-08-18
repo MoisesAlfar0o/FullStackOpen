@@ -43,9 +43,13 @@ const App = () => {
             setNewNumber('')
           })
            .catch(() => {
-            alert(
-              `the person '${result.name}' was already deleted from server`
-            )
+            setNotification({
+              msg: `the person '${result.name}' was already deleted from server`,
+              type: 'error'
+            })
+            setTimeout(() => {
+              setNotification(null)
+             }, 4000)
             setPersons(
               persons.filter(person => person.id !== result.id)
             )
@@ -60,10 +64,10 @@ const App = () => {
       personService
         .create(obj)
         .then(returnedPerson => {
-          setNotification(
-            `Added ${obj.name}`
-          )
-          
+          setNotification({
+            msg: `Added ${obj.name}`,
+            type: 'success'
+          })
           setTimeout(() => {
             setNotification(null)
           }, 4000)
@@ -71,6 +75,9 @@ const App = () => {
           setPersons(persons.concat(returnedPerson))
           setNewName('')
           setNewNumber('')
+        })
+        .catch(() => {
+          setNotification()
         })
     }
   }
@@ -83,7 +90,13 @@ const App = () => {
           setPersons(prevPersons => prevPersons.filter(person => person.id !== id))
         })
         .catch(() => {
-          alert(`${name} was already deleted from server`)
+          setNotification({
+            msg: `Information of ${name} has already been removed from server`,
+            type: 'error'
+          })
+          setTimeout(() => {
+            setNotification(null)
+          }, 5000)
           setPersons(
             persons.filter(person => person.id !== id)
           )
@@ -98,7 +111,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={notification}/>
+      <Notification message={notification} />
       <Filter handler={handleFilter} value={filter}/>
       <h3>Add a new</h3>
       <PersonForm 
