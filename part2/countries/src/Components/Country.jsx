@@ -1,4 +1,10 @@
+import { useEffect, useState } from "react"
+import axios from 'axios'
+import Weather from "./Weather"
+
 const Country = ({ country }) => {
+  const [weather, setWeather] = useState(null)
+
   const { 
     name: { common }, 
     capital, 
@@ -8,6 +14,16 @@ const Country = ({ country }) => {
   } = country
 
   const flagsValues = Object.values(flags)
+
+  useEffect(() => {
+    const key = import.meta.env.VITE_OPENWEATHER_API_KEY
+    const query = capital[0]
+    axios
+      .get(`https://api.openweathermap.org/data/2.5/weather?q=${query}&APPID=${key}`)
+      .then(res => {
+        setWeather(res.data)
+      })
+  }, [common, capital])
 
   return (
     <>
@@ -22,6 +38,7 @@ const Country = ({ country }) => {
         ))}
       </ul>
       <img src={flagsValues.at(0)} alt={flagsValues.at(-1)} />
+      <Weather countryWeather={weather} />
     </>
   )
 }

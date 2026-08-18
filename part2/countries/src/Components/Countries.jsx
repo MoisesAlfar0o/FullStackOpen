@@ -14,7 +14,6 @@ const Countries = ({ countries }) => {
 
   if(selected) return <Country country={selected} />
   
-
   return (
     <>
       {countries.map(country => (
