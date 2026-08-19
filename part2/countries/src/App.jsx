@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 import { useState } from "react"
-import axios from "axios"
 import Content from "./Components/Content"
+import getCountries from "./Services/countries"
 
 const App = () => {
   const [countries, setCountries] = useState(null)
@@ -9,19 +9,17 @@ const App = () => {
   const [filter, setFilter] = useState('')
 
   useEffect(() => {
-    axios
-      .get('https://studies.cs.helsinki.fi/restcountries/api/all')
-      .then(res => {
-        setCountries(res.data)
-      })
+      getCountries()
+      .then(initialData => setCountries(initialData))
   }, [])
 
   const handleFilter = (e) => {
-    setFilter(e.target.value)
-    const filteredCountries = filter.trim().length === 0
+    const newFilter = e.target.value
+    const filteredCountries = newFilter.trim().length === 0
       ? []
-      : countries.filter(country => country.name.common.toLowerCase().includes(filter.toLowerCase()))
+      : countries.filter(country => country.name.common.toLowerCase().includes(newFilter.toLowerCase()))
 
+    setFilter(newFilter)
     setMatchCountries(filteredCountries)
   }
 

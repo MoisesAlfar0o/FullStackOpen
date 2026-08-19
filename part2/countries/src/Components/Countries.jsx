@@ -7,7 +7,7 @@ const Countries = ({ countries }) => {
 
   const onSelected = (country) => {
     setSelected(prev => {
-      if(prev?.name.common) return null
+      if(prev) return null
       return country
     })
   }
