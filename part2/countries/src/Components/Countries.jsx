@@ -6,10 +6,7 @@ const Countries = ({ countries }) => {
   const [selected, setSelected] = useState(null)
 
   const onSelected = (country) => {
-    setSelected(prev => {
-      if(prev) return null
-      return country
-    })
+    setSelected(country)
   }
 
   if(selected) return <Country country={selected} />
