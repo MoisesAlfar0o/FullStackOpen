@@ -2,10 +2,11 @@ import { useEffect } from "react"
 import { useState } from "react"
 import Content from "./Components/Content"
 import getCountries from "./Services/countries"
+import Filter from "./Components/Filter"
 
 const App = () => {
   const [countries, setCountries] = useState(null)
-  const [matchCountries, setMatchCountries] = useState([])
+  const [filteredCountries, setfilteredCountries] = useState([])
   const [filter, setFilter] = useState('')
 
   useEffect(() => {
@@ -20,13 +21,13 @@ const App = () => {
       : countries.filter(country => country.name.common.toLowerCase().includes(newFilter.toLowerCase()))
 
     setFilter(newFilter)
-    setMatchCountries(filteredCountries)
+    setfilteredCountries(filteredCountries)
   }
 
   return (
     <div>
-      Filter countries <input type="text" onChange={handleFilter} value={filter}/>
-      <Content countries={matchCountries} />
+      <Filter onChange={handleFilter} filter={filter}/>
+      <Content countries={filteredCountries} />
     </div>
   )
 }

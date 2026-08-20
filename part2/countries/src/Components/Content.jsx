@@ -12,7 +12,7 @@ const Content = ({ countries }) => {
     return <Country country={countries[0]}/>
   }
   
-  return <p>Not matches</p>
+  return <p>No matches</p>
 }
 
 export default Content
